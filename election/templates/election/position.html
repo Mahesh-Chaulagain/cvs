@@ -1,0 +1,42 @@
+{% extends "election/base.html" %}
+{%load static%}
+{% block title %}Position{% endblock %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success" role="alert">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}  
+  <h2>Available Position For Vote
+  {%if user.is_authenticated%}
+  {%if perms.enroll%}
+  <a href="{% url 'add_position'%}" style="float:right;"><button class="btn btn-secondary">Add Position</button></a>
+  {%endif%}
+  {%endif%}
+  </h2>
+  <hr>
+<h2>
+  <ol>
+    {% for i in positions %}
+      <li>
+        <a  href="{% url 'candidate' pk=i.pk %}" style="color: black;">{{i.title}}</a>
+
+        {%if perms.enroll%}
+        <a href="{%url 'edit_position' pk=i.pk%}" style="float:right;">
+          <button class="btn btn-primary">Edit</button>
+        <a href="{%url 'delete_position' pk=i.pk%}" style="float:right;">
+          <button class="btn btn-danger">Delete</button>
+        </a>
+        {%endif%}
+
+      </li>
+    <br>
+    {% empty %}
+      <p>No Positions Available :(</p>
+    {% endfor %}
+  </ol>
+</h2>
+{% endblock %}

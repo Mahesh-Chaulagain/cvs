@@ -1,0 +1,31 @@
+{% extends "election/base.html" %}
+
+{% block title %}Candidate Details{% endblock %}
+
+{% block content %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-success" role="alert">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %} 
+
+<div> 
+        <img src="{{ details.image.url }}" width="220" height="250">
+        {%if perms.enroll%}
+        <a href="{%url 'edit_candidate' pk=details.pk%}" style="float:right;">
+          <button class="btn btn-primary">Edit</button>
+        <a href="{%url 'delete_candidate' pk=details.pk%}" style="float:right;">
+          <button class="btn btn-danger">Delete</button>
+        </a>
+        {%endif%}
+        <hr>
+        <p><b>Name:</b> {{ details.name }}</p>
+        <p><b>Position:</b> {{ details.position }}</p>
+        <p><b>Address:</b> {{ details.address }}</p>
+        <p><b>Bio:</b> {{ details.bio}}</p>
+</div>
+
+{% endblock %}
