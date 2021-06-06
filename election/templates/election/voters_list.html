@@ -1,0 +1,40 @@
+{% extends "election/base.html" %}
+
+{% block title %}Voters{% endblock %}
+
+{% block content %}
+
+  <h2 style="text-decoration: underline;">Voters</h2>
+ 
+  {%if voters%}
+  <table class="table text-center">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Image</th>
+        <th>User Name</th>
+        <th>Full Name</th>
+        <th>Email</th>
+        <th>Faculty</th>
+      </tr>
+    </thead>
+    <tbody>
+
+    {% for voter in voters%}
+      <tr>
+          <td>{{ forloop.counter }}</td>
+          <td><img src="{{ voter.profile.image.url }}" style="width: 50px;height: 50px;"></td>
+          <td>{{voter}}</td>
+          <td>{{ voter.first_name }} {{ voter.last_name }}</td>
+          <td>{{ voter.email }}</td>
+          <td>{{ voter.choices.faculty }}</td>
+        </tr>  
+      {% endfor %}
+    </tbody>
+  </table>
+
+  {%else%}
+  <h4>No voters found :( 
+  {%endif%}
+  
+{% endblock %}

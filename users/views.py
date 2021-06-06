@@ -27,7 +27,7 @@ def user_registration(request):
             context= {
                 'form':form
                 }
-    return render(request, "users/user_registration.html",context)
+            return render(request, "users/user_registration.html",context)
 
 
 def user_login(request):
@@ -55,28 +55,27 @@ def user_logout(request):
 
 @login_required
 def profile(request):
-    profile = Profile(user=request.user)
     if request.method == 'POST':   
-        u_form = UserUpdateForm(request.POST, instance=request.user,) 
-        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=profile)  
+        u_form = UserUpdateForm(request.POST, instance=request.user)  
+        p_form = ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)  
 
         if u_form.is_valid() and p_form.is_valid():
             u_form.save()
             p_form.save()
-            messages.success(request, 'Your profile has been updated!')
+            messages.success(request, f'Your profile has been updated!')
             return redirect('profile')
 
     else:
-        profile = Profile(user=request.user)
         u_form = UserUpdateForm(instance=request.user)
-        p_form = ProfileUpdateForm(instance=profile)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
 
     context = { 
         'u_form': u_form,
         'p_form': p_form
     }
 
-    return render(request, 'users/User_profile.html', context)
+    return render(request, 'users/user_profile.html', context)
+
 
 
 

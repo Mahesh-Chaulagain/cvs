@@ -6,6 +6,9 @@ class Position(models.Model):
 
     def __str__(self):
         return self.title
+        
+    def clean(self):
+        self.title = self.title.capitalize()
 
 
 class Candidate(models.Model):
@@ -18,6 +21,11 @@ class Candidate(models.Model):
 
     def __str__(self):
         return "{} - {}".format(self.name, self.position)
+    
+    def clean(self):
+        self.name = self.name.title()
+        self.bio = self.bio.capitalize()
+        self.address = self.address.capitalize()
 
 class ControlVote(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

@@ -160,6 +160,14 @@ def result(request):
     }
     return render(request, "election/result.html", context)
 
+@login_required
+def voters(request):
+    voters=User.objects.all()
+    context={
+        'voters':voters,
+    }
+    return render(request,'election/voters_list.html',context)
+
 
 
     

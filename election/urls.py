@@ -14,5 +14,5 @@ urlpatterns = [
     path('candidate/<int:pk>/delete/', views.delete_candidate, name='delete_candidate'),
     path('candidate/<int:pk>/edit/', views.edit_candidate, name='edit_candidate'),
     path('result/', views.result, name='result'),
-
+    path('voters/',views.voters,name='voters')
 ]
