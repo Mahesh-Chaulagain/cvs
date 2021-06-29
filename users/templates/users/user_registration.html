@@ -12,6 +12,15 @@
       <h5 class="alert alert-danger">{{note}}</h5>
     {% endif %}
     
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger" role="alert">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}  
+
+<center>
     <form method="POST" style="width: 500px;" enctype="multipart/form-data">
       {% csrf_token %}
       {% for field in form %}
@@ -31,7 +40,8 @@
       {% endfor %}
       <br>
       <input type="submit" class="btn btn-primary btn-sm" value="Sign Up">
-      <a href="{% url 'login' %}" class="btn btn-primary btn-sm">Go Back</a>
+      <br>
+      <a href="{% url 'login' %}" class="text-dark">Already have a account?</a>
     </form>
-
+</center>
 {% endblock %}

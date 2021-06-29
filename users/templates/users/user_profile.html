@@ -2,6 +2,7 @@
 
 {% block title%}Profile{%endblock%} 
 {% block content %}
+{% load crispy_forms_tags %}
   {% if messages %}
     {% for message in messages %}
     <div class="alert alert-success" role="alert">
@@ -16,16 +17,14 @@
         <div class="media-body my-4 mx-4">
           <h2 class="account-heading">{{ user.username }}</h2>
           <p class="text-secondary">{{ user.email }}</p>
-          <p class="text-secondary">{{ user.faculty}}</p>
-
-        </div>
+         </div>
       </div>
       <form method="POST" enctype="multipart/form-data">
             {% csrf_token %}
             <fieldset class="form-group">
                 <legend class="border-bottom mb-4">Profile Info</legend>
-                {{ u_form.as_p}}
-                {{ p_form.as_p}}
+                {{ u_form|crispy}}
+                {{ p_form|crispy}}
             </fieldset>
             <div class="form-group">
                 <button class="btn btn-success" type="submit">Update</button>

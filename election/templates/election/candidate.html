@@ -15,7 +15,7 @@
   <h2>Available Candidates of {{ obj.title }}
     {%if perms.enroll%}
   <a href="{% url 'add_candidate'%}" style="float:right;">
-    <button type="button" class="btn btn-secondary">Add Candidate</button></a>
+    <button type="button" class="btn btn-secondary">Add Candidate <i class="fas fa-plus-circle"></i></button></a>
   {%endif%}
   </h2>  
   <hr>
@@ -28,7 +28,12 @@
         <a href="{% url 'candidate_detail' c.id %}">
           <button type="button" class="btn btn-primary btn-sm" style="margin: 10px;">View Detail</button>
         </a>
+        {% if not request.user.is_superuser %}
+        {% if not request.user.is_staff%}
         <input type="submit" class="btn btn-outline-success btn-sm" value="VOTE">
+        {%endif%}
+        {%else%}
+        {%endif%}
       </label>
       </div>
     {% empty %}

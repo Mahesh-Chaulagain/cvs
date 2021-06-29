@@ -35,3 +35,11 @@ class ControlVote(models.Model):
     def __str__(self):
         return "{} - {} - {}".format(self.user, self.position, self.status)
 
+
+
+class VerifiedEmail(models.Model):
+    email=models.EmailField(max_length=100,unique=True)
+
+    def __str__(self):
+        return self.email  
+

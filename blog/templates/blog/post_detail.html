@@ -1,0 +1,52 @@
+{% extends 'blog/base.html' %}
+{% block contents %}
+    <div class="post">
+        <div class="card">
+            <div class="card-body">
+    {% if post.published_date %}
+        <div class="date">
+            <p class="card-text text-muted h6">{{ post.published_date}} </p>
+        </div>
+    {%else%}
+        <a class="btn btn-secondary btn-sm" href="{%url 'post_publish' pk=post.pk%}" style="float: right;">Publish</a>
+        {%endif%}
+
+        {% if user.is_authenticated%}
+        {% if perms.enroll %}
+        <a class="btn btn-default" href="{%url 'post_edit' pk=post.pk %}"  style="float: right;">
+            <span><i class="fas fa-edit"></i></span></a>
+        <a class="btn btn-default" href="{%url 'post_remove' pk=post.pk%}" style="float: right;">
+            <span><i class="fas fa-trash"></i></span></a>
+    {% endif %}
+    {%endif%}
+
+    <h2 class="card-title">{{post.title}}</h2>
+    <p class="card-text">{{post.text|linebreaksbr}}</p>
+</div>
+</div>
+</div>
+<div class="card">
+    <div class="card-body">
+<a class="btn btn-primary btn-sm" href="{%url 'add_comment_to_post' pk=post.pk%}">Add Comment</a>
+    {%for comment in post.comments.all%}
+    {%if user.is_authenticated or comment.approved_comment%}
+    <div class="comment">
+        <div class="date">
+            <p class="card-text text-muted h6">{{comment.created_date}} </p>
+        {%if not comment.approved_comment%}
+        {% if perms.enroll %}
+        <a class="btn btn-default" href="{%url 'comment_remove' pk=comment.pk%}" style="float: right;">
+            <span><i class="fa fa-times"></i></span></a>
+        <a class="btn btn-default" href="{%url 'comment_approve' pk=comment.pk%}" style="float: right;">
+            <span><i class="fa fa-check"></i></span></a>
+        {% endif %}
+        {%endif%}
+        </div>
+    <b>{{comment.author}}</b>
+    <p class="card-text">{{comment.text|linebreaks}}</p>
+    </div>
+    {% endif %}
+    {%empty%}
+        <p>No comments ..</p>
+    {%endfor%}
+{% endblock contents %}

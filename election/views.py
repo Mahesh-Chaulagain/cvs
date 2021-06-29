@@ -1,6 +1,6 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from .models import Position,ControlVote,Candidate
-from .forms import PositionForm,CandidateForm
+from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -11,10 +11,12 @@ def home(request):
     voters=User.objects.all().count()
     positions=Position.objects.all().count()
     candidates=Candidate.objects.all().count()
+    voted=ControlVote.objects.all().count()
     context={
         'voters':voters,
         'positions':positions,
         'candidates':candidates,
+        'voted':voted,
     }
     return render(request, "election/home.html",context)
 
@@ -40,7 +42,7 @@ def add_position(request):
             return redirect('/position/',pk=post.pk)
         else:
             messages.warning(request, 'Position already exists')
-            return redirect('/add_position/')
+            return redirect('add_position')
 
     context={
         'p_form':PositionForm()
@@ -162,11 +164,65 @@ def result(request):
 
 @login_required
 def voters(request):
-    voters=User.objects.all()
+    voters=User.objects.all().order_by('-is_superuser','-is_staff')
     context={
         'voters':voters,
     }
     return render(request,'election/voters_list.html',context)
+
+@login_required
+def update_voter(request,pk):
+    instance=get_object_or_404(User,pk=pk)
+    if request.method=='POST':
+        v_form=CustomUserChangeForm(request.POST,request.FILES,instance=instance)
+        if v_form.is_valid():
+            post=v_form.save()
+            post.save()
+            return redirect('/voters/',pk=post.pk)
+    else:
+        context={
+            'v_form':CustomUserChangeForm(instance=instance)
+        }
+        return render(request,'election/update_voter.html',context)
+
+@login_required
+def add_email(request):
+    if request.method=='POST':
+        form=EmailRegistrationForm(request.POST)
+        if form.is_valid():
+            obj=form.save()
+            obj.save()
+            email=request.POST.get('email')
+            messages.success(request,f'{email} added successfully')
+        else:
+            messages.warning(request,'email already exists')
+            return redirect('/add_email/')
+    form=EmailRegistrationForm()
+    emails=VerifiedEmail.objects.all()
+    context={
+        'form':form,
+        'emails':emails
+    }
+    return render(request,'election/add_email.html',context)
+
+@login_required
+def update_email(request,pk):
+    instance=get_object_or_404(VerifiedEmail,pk=pk)
+    if request.method=='POST':
+        form=EmailRegistrationForm(request.POST,instance=instance)
+        if form.is_valid():
+            post=form.save()
+            post.save()
+            return redirect('/add_email/',pk=post.pk)
+  
+    context={
+            'form':EmailRegistrationForm(instance=instance)
+        }
+    return render(request,'election/update_email.html',context)
+
+@login_required
+def about(request):
+    return render(request,'election/about.html')
 
 
 

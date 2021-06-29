@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Candidate, Position
+from .models import *
 
 @admin.register(Position)
 class PositionAdmin(admin.ModelAdmin):
@@ -13,3 +13,5 @@ class CandidateAdmin(admin.ModelAdmin):
     list_filter = ('position',)
     search_fields = ('name','position')
     readonly_fields = ('total_vote',)
+
+admin.site.register(VerifiedEmail)

@@ -3,6 +3,7 @@
 {% block title %}College Voting System{% endblock %}
 
 {% block content %}
+{% load crispy_forms_tags %}
   {% if messages %}
     {% for message in messages %}
     <div class="alert alert-success" role="alert">
@@ -14,10 +15,49 @@
   <h1>Hi, {{request.user.get_full_name }}<br>
   Welcome to College Voting System</h1>
   <hr>
-  <h4 style="margin: 10px;padding: 20px;">
-  Total Voters:{{voters}}<br>
-  Total Position:{{positions}}<br>
-  Total Candidate:{{candidates}}<br>
-</h4>
+  <h5 style="margin: 10px;padding: 20px;">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="card rounded-circle text-center ">
+          <div class="card-header" style="background-color: rgb(229, 29, 236);">
+            <h3>{{voters}}</h3>
+          </div>
+          <div class="card-body">
+            Total Voters
+          </div>
+      </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card rounded-circle text-center ">
+            <div class="card-header" style="background-color: rgb(136, 255, 0);">
+              <h3> {{positions}}</h3>
+            </div>
+            <div class="card-body">
+              No. of Positions
+            </div>
+        </div>
+      </div>
+        <div class="col-md-3">
+          <div class="card rounded-circle text-center ">
+              <div class="card-header" style="background-color: rgb(0, 255, 255);">
+                <h3>{{candidates}}</h3>
+              </div>
+              <div class="card-body">
+                No. of Candidates
+              </div>
+          </div>
+        </div>
+          <div class="col-md-3">
+            <div class="card rounded-circle text-center ">
+                <div class="card-header" style="background-color: rgb(255, 238, 0);">
+                  <h3>{{voted}}</h3>
+                </div>
+                <div class="card-body">
+                  Voters Voted
+                </div>
+            </div>
+          </div>
+  </div>
+</h5>
 </div> 
 {% endblock %}

@@ -4,7 +4,7 @@
 
 {% block content %}
 
-  <h2 style="text-decoration: underline;">Voters</h2>
+  <h2 style="text-decoration: underline;">Users</h2>
  
   {%if voters%}
   <table class="table text-center">
@@ -15,7 +15,8 @@
         <th>User Name</th>
         <th>Full Name</th>
         <th>Email</th>
-        <th>Faculty</th>
+        <th>Status</th>
+        <th>Actions</th>
       </tr>
     </thead>
     <tbody>
@@ -27,7 +28,17 @@
           <td>{{voter}}</td>
           <td>{{ voter.first_name }} {{ voter.last_name }}</td>
           <td>{{ voter.email }}</td>
-          <td>{{ voter.choices.faculty }}</td>
+          {%if voter.is_superuser %}
+          <td>Admin</td>
+          {% elif voter.is_staff%}
+          <td>Staff</td>
+          {%else%}
+          <td>Voter</td>
+          {%endif%}
+          <td>
+            <a href="{% url 'update_voter' pk=voter.pk %}">
+              <button class="btn btn-primary btn-sm">Update <i class="fas fa-user-edit"></i></button></a>
+          </td>
         </tr>  
       {% endfor %}
     </tbody>

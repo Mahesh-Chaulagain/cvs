@@ -1,0 +1,20 @@
+{% extends "election/base.html" %}
+
+{%block content%}
+{% load crispy_forms_tags %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger" role="alert">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}  
+
+<h1>Update User</h1>
+<form method="POST" >
+    {%csrf_token%}
+    {{v_form | crispy}}
+    <button type="submit" class="btn btn-secondary">Ok</button>
+</form>
+{%endblock%}

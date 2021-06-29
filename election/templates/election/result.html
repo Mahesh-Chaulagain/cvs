@@ -16,10 +16,7 @@
    }
   </style>
 
-  <h2 style="text-decoration: underline;">Result 
-    <a href="{%url 'position'%}" style="float:right;text-decoration: none">
-      <button class="btn btn-primary">Back to position</button></a>
-    </h2>
+  <h2 style="text-decoration: underline;">Result </h2>
     
   {%if results%}
   <table class="table text-center">
@@ -47,9 +44,7 @@
   </table>
 
   {%else%}
-  <h4>No votes found :( 
-    <br>
-    Be the first one to cast vote</h4>
+  <h4>Result will be available once the voting is complete</h4>
   {%endif%}
   
 {% endblock %}

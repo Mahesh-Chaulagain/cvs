@@ -1,0 +1,20 @@
+{% extends 'blog/base.html' %}
+
+{% block contents %}
+{% if posts %}
+    {% for post in posts %}
+    <div class="card mb-3">
+        <div class="card-body">
+            <h2 class="card-title">
+                <a href="{% url 'post_detail' pk=post.pk %}" style="text-decoration: none;">
+                    {{ post.title }}</a></h2>
+            <p class="card-text text-muted h6">{{ post.author }} | {{ post.published_date}} </p>
+            <p class="card-text">{{ post.text|linebreaksbr }}</p>
+            <a href="{%url 'post_detail' pk=post.pk%}" style="float: right;">Comments:{{post.approved_comments.count}}</a>
+        </div>
+    </div>
+    {% endfor %}
+    {%else%}
+    <p>No notices..</p>
+    {%endif%}
+{% endblock contents%}

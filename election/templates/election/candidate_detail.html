@@ -16,9 +16,9 @@
         <img src="{{ details.image.url }}" width="220" height="250">
         {%if perms.enroll%}
         <a href="{%url 'edit_candidate' pk=details.pk%}" style="float:right;">
-          <button class="btn btn-primary">Edit</button>
+          <button class="btn btn-primary">Edit <i class="fas fa-edit"></i></button>
         <a href="{%url 'delete_candidate' pk=details.pk%}" style="float:right;">
-          <button class="btn btn-danger">Delete</button>
+          <button class="btn btn-danger">Delete <i class="fas fa-trash"></i></button>
         </a>
         {%endif%}
         <hr>

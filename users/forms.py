@@ -1,16 +1,14 @@
-from users.models import Profile
+from django.forms import fields
+from django.forms.widgets import EmailInput
+from users.models import *
 from django import forms
 from django.contrib.auth.models import User
 
-faculties=(
-    ("1", "IT"),
-    ("2", "Civil"),
-    ("3", "Computer")   
-)
-
 class RegistrationForm(forms.ModelForm):
     confirm_password = forms.CharField(max_length=100, widget=forms.PasswordInput)
-    faculty=forms.ChoiceField(choices=faculties)
+    first_name=forms.CharField(max_length=20,required=True)
+    last_name=forms.CharField(max_length=20,required=True)
+    email=forms.EmailField(required=True)
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password']
@@ -22,7 +20,7 @@ class UserUpdateForm(forms.ModelForm):
     email=forms.EmailField()
     class Meta:
         model=User
-        fields=['username','email']
+        fields=['username','email','first_name','last_name']
 
 
 class ProfileUpdateForm(forms.ModelForm):

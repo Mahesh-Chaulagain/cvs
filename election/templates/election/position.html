@@ -5,7 +5,7 @@
 {% block content %}
 {% if messages %}
 {% for message in messages %}
-<div class="alert alert-success" role="alert">
+<div class="alert alert-{{message.tags}}" role="alert">
   {{ message }}
 </div>
 {% endfor %}
@@ -13,7 +13,8 @@
   <h2>Available Position For Vote
   {%if user.is_authenticated%}
   {%if perms.enroll%}
-  <a href="{% url 'add_position'%}" style="float:right;"><button class="btn btn-secondary">Add Position</button></a>
+  <a href="{% url 'add_position'%}" style="float:right;">
+    <button class="btn btn-secondary">Add Position <i class="fas fa-plus-circle"></i></button></a>
   {%endif%}
   {%endif%}
   </h2>
@@ -26,9 +27,9 @@
 
         {%if perms.enroll%}
         <a href="{%url 'edit_position' pk=i.pk%}" style="float:right;">
-          <button class="btn btn-primary">Edit</button>
+          <button class="btn btn-primary">Edit <i class="fas fa-edit"></i></button>
         <a href="{%url 'delete_position' pk=i.pk%}" style="float:right;">
-          <button class="btn btn-danger">Delete</button>
+          <button class="btn btn-danger">Delete <i class="fas fa-trash"></i></button>
         </a>
         {%endif%}
 

@@ -1,0 +1,52 @@
+{% extends "election/base.html" %}
+
+{% block title %}Add Email{% endblock %}
+
+{%block content%}
+{% load widget_tweaks %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-danger" role="alert">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}  
+
+<h1>Enter new email</h1>
+<form method="POST">
+    {%csrf_token%}
+    {% for field in form %}
+    <b>{{ field.label_tag }}</b> 
+    {% render_field field class="form-control" %}
+    <button type="submit" class="btn btn-secondary">Add</button>
+    {%endfor%}
+  </form>
+  <br>
+  <h3>Verified Emails</h3>
+  {%if emails%}
+  <table class="table text-center">
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Email</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for email in emails%}
+      <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{email}}</td>
+        <td>
+          <a href="{% url 'update_email' pk=email.pk %}"><button class="btn btn-primary btn-sm">Update</button></a>
+         </td>
+         </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  
+    {%else%}
+    <h4>No emails found :( 
+    {%endif%}
+{%endblock%}
