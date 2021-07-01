@@ -3,7 +3,7 @@
 {% if posts %}
     {%for post in posts%}
     <div class="post">
-        <div class="card mb-3">
+        <div class="card mb-3" style="background-color: rgb(197, 188, 176);">
         <div class="card-body">     
         <h2 class="card-title"><a href="{%url 'post_detail' pk=post.pk%}">{{post.title}}</a></h1>
         <p class="card-text text-muted h6">created:{{post.created_date|date:'d-m-y'}}</p>

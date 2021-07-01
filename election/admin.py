@@ -15,3 +15,5 @@ class CandidateAdmin(admin.ModelAdmin):
     readonly_fields = ('total_vote',)
 
 admin.site.register(VerifiedEmail)
+
+admin.site.register(ControlVote)

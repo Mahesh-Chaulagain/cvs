@@ -14,12 +14,14 @@ class CandidateForm(forms.ModelForm):
         fields=('position','name','bio','address','image',)
 
 class CustomUserChangeForm(UserChangeForm):
-    password = None
-
+    username = forms.CharField(disabled=True)
+    email = forms.EmailField(disabled=True)
+    last_login = forms.CharField(disabled=True)
+    password=None
     class Meta:
         model = User
         fields ="__all__"
-        exclude = ["password","last login","groups","important dates",] 
+        exclude = ["password","groups","important dates","is_active","date_joined",] 
 
 
 class EmailRegistrationForm(forms.ModelForm):

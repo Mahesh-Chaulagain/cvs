@@ -1,7 +1,7 @@
 {% extends 'blog/base.html' %}
 {% block contents %}
     <div class="post">
-        <div class="card">
+        <div class="card" style="background-color: rgb(197, 188, 176);">
             <div class="card-body">
     {% if post.published_date %}
         <div class="date">
@@ -25,9 +25,9 @@
 </div>
 </div>
 </div>
-<div class="card">
+<div class="card" style="background-color: rgb(197, 188, 176);">
     <div class="card-body">
-<a class="btn btn-primary btn-sm" href="{%url 'add_comment_to_post' pk=post.pk%}">Add Comment</a>
+    <a class="btn btn-primary btn-sm" href="{%url 'add_comment_to_post' pk=post.pk%}">Add Comment</a>
     {%for comment in post.comments.all%}
     {%if user.is_authenticated or comment.approved_comment%}
     <div class="comment">

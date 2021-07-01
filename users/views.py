@@ -11,7 +11,6 @@ import random
 import uuid
 from election.models import VerifiedEmail
 
-
 def user_registration(request):
     if request.user.is_authenticated:
         return redirect('/home/')
@@ -36,10 +35,11 @@ def user_registration(request):
                         obj = form.save(commit=False)
                         obj.set_password(obj.password)
                         email=form.cleaned_data.get('email')
+                        image=form.cleaned_data.get('image')
                         if VerifiedEmail.objects.filter(email=email).exists():
                             obj.save()
                             auth_token = str(uuid.uuid4())
-                            profile_obj = Profile.objects.create(user = obj , auth_token = auth_token)
+                            profile_obj = Profile.objects.create(user = obj , auth_token = auth_token,image=image)
                             profile_obj.save()
                             send_mail_after_registration(email , auth_token)
                             return redirect('/token')

@@ -9,6 +9,7 @@ class RegistrationForm(forms.ModelForm):
     first_name=forms.CharField(max_length=20,required=True)
     last_name=forms.CharField(max_length=20,required=True)
     email=forms.EmailField(required=True)
+    image=forms.ImageField()
     class Meta:
         model = User
         fields = ['username', 'first_name', 'last_name', 'email', 'password']
@@ -17,7 +18,7 @@ class RegistrationForm(forms.ModelForm):
         }
 
 class UserUpdateForm(forms.ModelForm):
-    email=forms.EmailField()
+    email=forms.EmailField(disabled=True)
     class Meta:
         model=User
         fields=['username','email','first_name','last_name']

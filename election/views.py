@@ -1,10 +1,11 @@
+from django.http.response import HttpResponse
 from django.shortcuts import render,redirect,get_object_or_404
-from .models import Position,ControlVote,Candidate
+from .models import *
 from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-
+from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 @login_required
 def home(request):
@@ -70,7 +71,7 @@ def edit_position(request,pk):
 def delete_position(request,pk):
     position=get_object_or_404(Position,pk=pk)
     position.delete()
-    messages.warning(request,f'Position:{position}removed')
+    messages.warning(request,f'Position:{position} removed')
     return redirect('/position/')
 
 
@@ -87,9 +88,10 @@ def candidate(request,pk):
             temp2.save()
             temp.status = True
             temp.save()
-            return redirect('/result/')
+            messages.success(request,f'Vote done to {obj.title}')
+            return redirect('position')
         else:
-            messages.success(request, 'You already voted this position.')
+            messages.warning(request, 'You already voted this position.')
             context={
                 'obj':obj
             }
@@ -156,15 +158,40 @@ def edit_candidate(request,pk):
 
 @login_required   
 def result(request):
-    results = Candidate.objects.all().order_by('position','-total_vote')
+    result = Candidate.objects.all().order_by('position','-total_vote')
+    page = request.GET.get('page', 1)
+    paginator = Paginator(result, 5)
+    try:
+        results = paginator.page(page)
+    except PageNotAnInteger:
+        results = paginator.page(1)
+    except EmptyPage:
+        results = paginator.page(paginator.num_pages)
     context={
-        'results':results
+        'results':results,
     }
     return render(request, "election/result.html", context)
 
+def search_result(request):
+    qur=request.GET.get('search')
+    results=[item for item in Candidate.objects.all().order_by('position','-total_vote') if qur in item.name.lower() or qur in item.position.title.lower()]
+    return render(request,'election/search.html',{'results':results})
+
+def view_log(request):
+    logs=ControlVote.objects.all()
+    return render(request,'election/activity_logs.html',{'logs':logs})
+    
 @login_required
 def voters(request):
-    voters=User.objects.all().order_by('-is_superuser','-is_staff')
+    voter=User.objects.all().order_by('-is_superuser','-is_staff')
+    page = request.GET.get('page', 1)
+    paginator = Paginator(voter, 5)
+    try:
+        voters = paginator.page(page)
+    except PageNotAnInteger:
+        voters = paginator.page(1)
+    except EmptyPage:
+        voters = paginator.page(paginator.num_pages)
     context={
         'voters':voters,
     }
@@ -185,6 +212,11 @@ def update_voter(request,pk):
         }
         return render(request,'election/update_voter.html',context)
 
+def search_voter(request):
+    qur=request.GET.get('search').lower()
+    voters=[item for item in User.objects.all() if qur in item.username.lower() or qur in item.email.lower()]
+    return render(request,'election/search.html',{'voters':voters})
+
 @login_required
 def add_email(request):
     if request.method=='POST':
@@ -198,7 +230,15 @@ def add_email(request):
             messages.warning(request,'email already exists')
             return redirect('/add_email/')
     form=EmailRegistrationForm()
-    emails=VerifiedEmail.objects.all()
+    email=VerifiedEmail.objects.all()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(email, 5)
+    try:
+        emails = paginator.page(page)
+    except PageNotAnInteger:
+        emails = paginator.page(1)
+    except EmptyPage:
+        emails = paginator.page(paginator.num_pages)
     context={
         'form':form,
         'emails':emails
@@ -219,6 +259,11 @@ def update_email(request,pk):
             'form':EmailRegistrationForm(instance=instance)
         }
     return render(request,'election/update_email.html',context)
+
+def search_email(request):
+    qur=request.GET.get('search').lower()
+    emails=VerifiedEmail.objects.filter(email__contains=qur)
+    return render(request,'election/search.html',{'emails':emails})
 
 @login_required
 def about(request):
