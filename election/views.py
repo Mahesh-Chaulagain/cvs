@@ -9,7 +9,7 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 
 @login_required
 def home(request):
-    voters=User.objects.all().count()
+    voters=User.objects.all().exclude(is_superuser=True,is_staff=True).count()
     positions=Position.objects.all().count()
     candidates=Candidate.objects.all().count()
     voted=ControlVote.objects.all().count()
