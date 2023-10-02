@@ -1,0 +1,25 @@
+{% extends "election/base.html" %}
+
+{% block title %}Update Email{% endblock %}
+
+{%block content%}
+{% load widget_tweaks %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{message.tags}}" role="alert">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}  
+
+<h1>Update Email</h1>
+<form method="POST" >
+    {%csrf_token%}
+    {% for field in form %}
+    <b>{{ field.label_tag }}</b> 
+    {% render_field field class="form-control" %}
+    <button type="submit" class="btn btn-secondary">Ok</button>
+    {%endfor%}
+</form>
+{%endblock%}

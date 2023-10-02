@@ -1,0 +1,40 @@
+{% extends "election/base.html" %}
+
+{%block title %}Add Candidate {% endblock %}
+
+{%block content%}
+{% load widget_tweaks %}
+
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{message.tags}}" role="alert">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}  
+
+<h2>Enter New Candidate Details</h2>
+<hr>
+<h5>
+<form method="POST" class="form" enctype="multipart/form-data" 
+style="padding: 20px;border-style:double;">
+    {%csrf_token%}
+    {% for field in c_form %}
+    <div class="form-group">
+      {% if field.errors %}
+        {% for error in field.errors %}
+          <ul>
+            <li>{{error}}</li>
+          </ul>
+        {% endfor %}
+      {% endif %} 
+      <b>{{ field.label_tag }}</b> 
+      {% render_field field class="form-control" %} 
+    </div>
+  {% endfor %}
+  <br>
+    <button type="submit" class="btn btn-secondary">Add</button>
+</form>
+</h5>
+
+{%endblock%}

@@ -1,0 +1,47 @@
+{% extends "election/base.html" %}
+
+{% block title %}Registration{% endblock %}
+
+{% block content %}
+
+  {% load widget_tweaks %}
+
+    <h2>User Registration</h2>
+    
+    {% if note %}
+      <h5 class="alert alert-danger">{{note}}</h5>
+    {% endif %}
+    
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{message.tags}}" role="alert">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}  
+
+<center>
+    <form method="POST" style="width: 500px;" enctype="multipart/form-data">
+      {% csrf_token %}
+      {% for field in form %}
+        <div class="form-group">
+          {% if field.errors %}
+            {% for error in field.errors %}
+              <ul>
+                <li>{{error}}</li>
+              </ul>
+            {% endfor %}
+          {% endif %}
+             
+          <b>{{ field.label_tag }}</b> 
+          {% render_field field class="form-control" %}
+         
+        </div>
+      {% endfor %}
+      <br>
+      <input type="submit" class="btn btn-primary btn-sm" value="Sign Up">
+      <br>
+      <a href="{% url 'login' %}" class="text-dark">Already have a account?</a>
+    </form>
+</center>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends "election/base.html" %}
+
+{% block title %}Candidate{% endblock %}
+
+{% block content %}
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{message.tags}}" role="alert">
+        {{ message }}
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <h2>Available Candidates of {{ obj.title }}
+    {%if perms.enroll%}
+  <a href="{% url 'add_candidate'%}" style="float:right;">
+    <button type="button" class="btn btn-secondary">Add Candidate <i class="fas fa-plus-circle"></i></button></a>
+  {%endif%}
+  </h2>  
+  <hr>
+  <form method="POST">
+    {% csrf_token %}
+    {% for c in obj.candidate_set.all %}
+      <div>
+      <input type="radio" id="{{c.id}}" name="{{ c.position}}" value="{{c.id}}"required>
+      <label  for="{{c.id}}" style="font-size: 30px;">{{c.name}}
+        <a href="{% url 'candidate_detail' c.id %}">
+          <button type="button" class="btn btn-primary btn-sm" style="margin: 10px;">View Detail</button>
+        </a>
+        {% if not request.user.is_superuser %}
+        {% if not request.user.is_staff%}
+        <input type="submit" class="btn btn-outline-success btn-sm" value="VOTE">
+        {%endif%}
+        {%else%}
+        {%endif%}
+      </label>
+      </div>
+    {% empty %}
+      <p>No Candidates Available</p>
+    {% endfor %}
+    <hr>
+   </form>
+  <br>
+  <a href="{% url 'position' %}">Go Back</a>
+{% endblock %}

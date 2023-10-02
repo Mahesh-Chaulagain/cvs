@@ -1,0 +1,80 @@
+{% extends "election/base.html" %}
+{%load static%}
+{% block title %}Position{% endblock %}
+
+{% block content %}
+{% if messages %}
+{% for message in messages %}
+<div class="alert alert-{{message.tags}}" role="alert">
+  {{ message }}
+</div>
+{% endfor %}
+{% endif %}  
+
+
+<script>
+  var countDownDate = new Date("sep 29, 2021 05:15:25").getTime();
+ 
+ var x = setInterval(function() {
+ 
+ 
+   var now = new Date().getTime();
+ 
+ 
+   var distance = countDownDate - now;
+ 
+ 
+   var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+   var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+   var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+   var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+ 
+ 
+   document.getElementById("demo").innerHTML = "Voting  will end in " + days + "d " + hours + "h " +
+     minutes + "m " + seconds + "s ";
+ 
+ 
+   if (distance < 0) {
+     clearInterval(x);
+     window.location.href = "{% url 'result' %}"
+     document.getElementById("demo").innerHTML = "Voting Ended";
+   }
+ }, 1000);
+ </script>
+
+  <h2>Available Position For Vote</h2>
+    <div id="demo"></div>
+  {%if user.is_authenticated%}
+  {%if perms.enroll%}
+  <br>
+  <a href="{% url 'add_position'%}">
+    <button class="btn btn-secondary">Add Position <i class="fas fa-plus-circle"></i></button></a>
+  {%else%}
+  <a href="{% url 'view_log'%}">
+    <button class="btn btn-secondary">Activity Logs</button></a>
+    {%endif%}
+  {%endif%}
+  
+  <hr>
+<h2>
+  <ol>
+    {% for i in positions %}
+      <li>
+        <a  href="{% url 'candidate' pk=i.pk %}" style="color: black;">{{i.title}}</a>
+        {%if perms.enroll%}
+        <a href="{%url 'edit_position' pk=i.pk%}" style="float:right;">
+          <button class="btn btn-primary">Edit <i class="fas fa-edit"></i></button>
+        <a href="{%url 'delete_position' pk=i.pk%}" style="float:right;">
+          <button class="btn btn-danger">Delete <i class="fas fa-trash"></i></button>
+        </a>
+        {%endif%}
+
+      </li>
+    <br>
+    {% empty %}
+      <p>No Positions Available :(</p>
+    {% endfor %}
+  </ol>
+</h2>
+
+{% endblock %}

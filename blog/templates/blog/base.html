@@ -1,0 +1,28 @@
+{% extends 'election/base.html' %}
+{% load static %}
+{% block title %}Notice{% endblock %}
+{% block content %}
+    <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+    <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+ 
+<div class="page-header">
+{% if user.is_authenticated%}
+{%if perms.enroll %}
+    <a href="{%url 'post_new'%}" class="top-menu"><span><i class="fas fa-plus-circle"></i></span></a>
+    <a href="{%url 'post_draft_list'%}" class="top-menu"><span><i class="fas fa-edit"></i></span></a>
+    {%endif%}
+    <p class="top-menu">User:{{user.username}}
+{%endif%} 
+    <h1><a href="{% url 'post_list' %}">Notice</a></h1>
+</div>
+<br>
+<div class="content container">
+    <div class="row">
+        <div class="col-md-11">
+             {% block contents %}
+
+             {% endblock contents %}
+        </div>
+    </div>
+</div>
+{% endblock %}
