@@ -1,40 +1,39 @@
 {% if user.is_authenticated %}
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="font-size: large;">
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-     aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span></button>
-      
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-              <a class="nav-link" href="{% url 'home' %}">Home</a>
-          </li>
-          <li class="nav-item">
-              <a class="nav-link" href="{% url 'position'%}">Vote</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'result' %}">Result</a>
-          </li>
-          
-      {%if perms.enroll%}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'voters' %}">Users</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'add_email' %}">Add Email</a>
-        </li>
+
+ <!-- Nav Bar -->
+      <nav class="navbar navbar-expand-lg navbar-light">
+            <a class="navbar-brand" href="{% url 'home' %}">CVS</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo01" aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+            </button>
+
+        <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
+          <ul class="navbar-nav ms-auto">
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'home' %}">Home</a>
+              </li>
+              <li class="nav-item">
+                  <a class="nav-link" href="{% url 'position'%}">Vote</a>
+              </li>
+              <li class="nav-item">
+                 <a class="nav-link" href="{% url 'result' %}">Result</a>
+              </li>
+            {%if perms.enroll%}
+            <li class="nav-item">
+                 <a class="nav-link" href="{% url 'voters' %}">Users</a>
+              </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'add_email' %}">Add Email</a>
+            </li>
       {%endif%}
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'post_list' %}">Notice</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'about' %}">About us</a>
-        </li>
-
-      </ul>
-      </div>
-
-        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'post_list' %}">Notice</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'about' %}">About us</a>
+            </li>
+          </ul>
+          <ul class="navbar-nav ml-auto">
           <li class="nav-item">
           <a class="nav-link" href="{% url 'profile' %}">Profile
             <i class="fas fa-user"></i>
@@ -52,5 +51,6 @@
         <b>College Voting System</b>
       </div>
       {% endif %}
-    </div>
-</nav>
+        </div>
+      </nav>
+
