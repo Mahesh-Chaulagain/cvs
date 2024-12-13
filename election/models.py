@@ -43,3 +43,8 @@ class VerifiedEmail(models.Model):
     def __str__(self):
         return self.email  
 
+class ElectionDate(models.Model):
+    result_date = models.DateTimeField("Result Date")
+
+    def __str__(self):
+        return self.result_date.strftime("%Y-%m-%d %H:%M:%S")

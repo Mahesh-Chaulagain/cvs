@@ -23,4 +23,5 @@ urlpatterns = [
     path('email/<int:pk>/edit/', views.update_email, name='update_email'),
     path('about/',views.about,name='about'),
     path('search_email/',views.search_email,name='search_email'),
+    path('set_vote_date/', views.set_vote_date,name='set_date'),
 ]

@@ -25,8 +25,11 @@ def home(request):
 @login_required
 def position(request):
     positions=Position.objects.all()
+    result_date = ElectionDate.objects.first()
+    result_date_value = result_date.result_date if result_date else None
     context={
-        'positions':positions
+        'positions':positions,
+        "result_date": result_date_value
     }
     return render(request, "election/position.html", context)
 
@@ -159,8 +162,10 @@ def edit_candidate(request,pk):
 @login_required   
 def result(request):
     result = Candidate.objects.all().order_by('position','-total_vote')
+    result_date = ElectionDate.objects.first()
     page = request.GET.get('page', 1)
     paginator = Paginator(result, 5)
+    result_date_value = result_date.result_date if result_date else None
     try:
         results = paginator.page(page)
     except PageNotAnInteger:
@@ -169,6 +174,7 @@ def result(request):
         results = paginator.page(paginator.num_pages)
     context={
         'results':results,
+        "result_date": result_date_value
     }
     return render(request, "election/result.html", context)
 
@@ -268,6 +274,22 @@ def search_email(request):
 @login_required
 def about(request):
     return render(request,'election/about.html')
+
+@login_required
+def set_vote_date(request):
+    # Fetch the existing result date or create a new one
+    date_instance = ElectionDate.objects.first() or ElectionDate()
+
+    if request.method == "POST":
+        d_form = ElectionDateForm(request.POST, instance=date_instance)
+        if d_form.is_valid():
+            d_form.save()
+            messages.success(request, "Vote end date has been set successfully!")
+            return redirect("home")
+    else:
+        d_form = ElectionDateForm(instance=date_instance)
+
+    return render(request, "election/set_vote_date.html", {"d_form": d_form})
 
 
 

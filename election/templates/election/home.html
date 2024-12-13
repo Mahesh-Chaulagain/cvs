@@ -25,7 +25,9 @@
   {% endif %}  
 
   <h1>Hi, {{request.user.get_full_name }}<br>
-  Welcome to College Voting System</h1>
+  Welcome to College Voting System <span><a href="{% url 'set_date' %}">
+    <button class="btn btn-secondary">Set Result Time</button>
+  </a></span></h1>
   <hr>
   <h5 style="margin: 10px;padding: 20px;">
   <div class="row">

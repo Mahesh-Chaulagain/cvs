@@ -29,5 +29,13 @@ class EmailRegistrationForm(forms.ModelForm):
         model=VerifiedEmail
         fields=['email',]
 
+class ElectionDateForm(forms.ModelForm):
+    class Meta:
+        model = ElectionDate
+        fields = ["result_date"]
+        widgets = {
+            "result_date": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+        }
+
         
         
